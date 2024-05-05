@@ -1,0 +1,253 @@
+broadcast receiver
+custombroadcast
+access specfiers
+abstract and interface difference
+oops - abstraction, encapsulation, inheritance, polymorphysm, class, interface
+
+
+
+hidl - done
+aidl
+aid
+android architecture
+zygot
+system server
+system app vs user apps
+Client server method
+
+
+
+
+full forms 
+
+    HAL - hardware abstraction layer
+    HIDL - HAL interface definition language
+         - provides hardware abstraction
+         - works as a mediator between low-level code and framework code
+    AIDL - android interface definition language
+         - uses intercommunication process to share data among the process
+         - interprocess communication within Android framework
+    IDL - interface definition language
+    IPC - interprocess communication
+    ART - android runtime
+    OTA - over the air
+
+
+AOSP commands
+
+    "source build/envsetup.sh" - Sets up the environment for building AOSP. This needs to be executed in the root directory of the AOSP source code.
+    "lunch" - Displays a menu to choose the target device and build variant.
+    "make" - Initiates the build process. You can add a specific target to build a particular module or a complete image.
+    "make clean" - Removes the build output files for a clean build.
+    "make clobber" - Removes the entire build directory.
+    "fastboot flashall" - Flash the AOSP build to a connected device using fastboot.
+    "emulator" - Launches the Android emulator. You may need to specify the AVD (Android Virtual Device) name.
+    "make snod" - Creates a system image for the emulator.
+    "make otapackage" - Generates a package that can be used for over-the-air updates.
+    "make showcommands" - Displays the commands that would be executed during the build.
+    "repo sync" - Synchronizes the local AOSP source code with the latest changes from the AOSP repositories.
+
+
+
+
+
+file structure 
+
+    art — deals with the compilation of the latest android ART run time.
+    bionic — Bionic is mainly a port of the BSD C library to our Linux kernel, Support for x86, ARM and ARM thumb CPU instruction sets and kernel interfaces.
+    bootable — Boot and startup related code. the fastboot protocol info could be interesting since it is implemented by boot loaders in a number of devices 	such as the Nexus ones.
+    build — The main entry point of the build system resides here — envsetup.sh , This script will check a few things to make sure all the needed 	applications available in the local machine.
+    cts — the compatibility tests. The test suite to ensure that a build complies with the Android specification
+    dalvik — responsible for the compilation of the Dalvik runtime for Android devices.
+    Development — contains application that are not part of the OS. There are some useful application such as widget
+    Device — It contains the device specific configurations for many devices. It contains following subfolder ‘common’, ‘generic’, ‘Google’ and ‘Sample’.
+    external — This directory contains source code for all external open source projects such as SQLite, Freetype, webkit and webview.
+    frameworks — most important directories. contains the sources for the framework. you will find the implementation of key services such as the System 	Server with the Package and Activity managers.
+    hardware — source code such as the Android hardware abstraction layer (HAL) specification and implementation. 
+    Kernel — It’s not a default folder in the source code, but it’s a part of device configuration set-up. It contains the kernel source of your device.
+    libcore — I’ll explain this one with the important folders inside this, since every folder performs a different function.
+    out — The build output will be placed here after you run make. The folder structure is out/target/product/. 
+    packages — Android application available as part of the AOSP — Camera, SMS, Dialer, Launcher, etc
+    sdk — This directory contains lots of apps that are not part of the operating system.
+    system — Source code files for the core Android system. That is the minimal Linux system that is started before the Dalvik VM and any java based services 	are enabled. This includes the source code for the init process and the default init.rc script
+    tools — Some external important tools that help in compiling
+    vendor — This directory contains vendors with specific libraries.
+
+
+
+ANDROID BOOT PROCESS 
+
+    PowerOn >> Bootloader >> LinuxKernel >> Init >> Zygot >> SystemServer >> SystemUI >> Launcher
+
+    1. Boot ROM - power on --> boot rom code --> Bootloader
+    2. Bootloader - Bootloader contains low-level code tells how to startup system kernel and RAM init
+    3. Kernel - starts memory, cache, drivers, input-output --> starts "init" from system
+    4. init - mount directories like /sys, /dev, /proc --> Define SELinux policys --> Initialize property service --> Runs /init.rc
+    5. zygot and Dalvik/ART - zygot is process to create DVM Dalvik-VM/ART Android-Runtime --> create directories like /root, /art, tzdata(timezone) --> starts JNI and JVM --> calls zygot's main() method
+        zygot - starts runtime and system servers with fork-mechanism
+    6. System servers - from Startotherservices it calls start System Ui --> starts all android native libraries, functionalites, starts thread --> Sends broadcast "ACTION_BOOT_COMPLETED"
+
+
+
+
+
+
+
+
+
+
+Q - Evaluation of expression (Type promotion, type casting)
+
+
+Q - Command Line Arguments (Compile and run java program from command line) 
+
+
+Q - Singleton class
+A - singleton class is a class where only one object of class can be created it is done via creating a object of that class inside same class and creating a constructor returning object of the class
+
+    public class Singleton{
+        public static void main(String[] args){
+
+            Abc obj1 = abc.getInstance();
+            Abc obj2 = abc.getInstance();   
+
+        }
+    }
+    class Abc{
+        static Abc obj = new Abc(); //object is created here
+        private Abc(){
+            //object cannot be created again as it is private
+        }
+
+        private static Abc getInstance(){
+            return obj;
+            //this getInstance() method can only be called for getting an instance of this class
+        }
+    }
+
+
+Q - Why Java is platform independent
+A - Java is platform-independent because it is compiled to a bytecode that can be run on any device that has a Java Virtual Machine (JVM). you can write a Java program on one platform (such as Windows) and then run it on a different platform (such as macOS or Linux) without making any changes to the code
+
+
+Q - Activity Lifecycle
+A - 1. oncreate 
+    2. onstart 
+    3. onresume 
+    4. onpause 
+    5. onstop 
+    6. onrestart 
+    7. ondestroy
+
+
+Q - Bound Service
+A - Service the is bound with a perticular application is called as bound service. which is destroyed as soon as the service is unbind with the application.
+
+
+Q - Fragment
+A - fragment are light weight as compared to activity, use to quickly switch between multiple tasks.
+
+
+Q - Content provider
+A - Content providers can help an application manage access to data stored by itself or stored by other apps and provide a way to share data with other apps
+
+
+Q - Intent Types
+A - two types of intents
+    1. Implicit intent - This intent specifies an action that can be invoked by any app on the device which enables us to perform an action. It does not have exact knowledge about the landing component
+    2. Explicit intent - This intent specifies the component in an app. It is one that we use to launch a specific app component, such as a particular activity or service in our application.
+
+
+Q - File Management
+
+
+Q - Handler and its different uses
+A - Handler Used to communicate between the UI and Background thread. where as Thread: To do tasks in saperate(Background) thread than UI thread. A Handler allows you to send and process Message and Runnable objects associated with a thread's MessageQueue. When you create a new Handler it is bound to a Looper.
+
+
+Q - AsyncTask
+A - makes it easier to do operations on a background thread and publish the result on the User Interface (UI)/ main thread without having to manipulate threads and handlers ourselves.
+
+
+Q - Retrofit
+A - retrofit is a api used to get data from web using GET or POST method
+
+
+Q - REST API
+A - A RESTful API is an architectural style for an application program interface (API) that uses HTTP requests to access and use data. That data can be used to GET, PUT, POST and DELETE data types,
+
+
+Q - data passing using interface
+A - interface Helo{
+        void helomethod(String data);
+    }
+
+	passing and receiving data into this String data
+
+Q - Write a program to print fibonacci series (Recursive and Iterative)
+A - 
+
+
+Q - architecture patterns
+A - 1. MVC-firstly used by android
+    2. MVP-secondly used by android
+    3. MVVM-used currently by android
+
+    MVC:-
+        view - consist of xml files
+            -> bound with controller
+
+        controller - consist of activity and fragments
+             -> bound with view
+
+        model - consist of data classes, database, business logic
+
+    MVP:-
+        view - consist of xml file, activity/fragments
+            -> communication in view and presenter is done using interface
+
+        presenter - consist of simple class, presentation logic
+
+        model - consist of data classes, database, business logic
+
+    MVVM:-
+        view - consist of xml file, activity/fragments
+            -> communication in view and viewmodel is done using observables
+
+        viewmodel - consist of simple class, presentation logic
+
+        model - consist of data classes, database, business logic
+            -> interacts with APIs and database
+
+
+Q - Android Core component
+A - 1. activities
+    2. views
+    3. intents
+    4. services
+    5. contentprovider
+    6. fragments
+    7. AndroidManifest
+
+
+Q - Android architecture
+A - 1. application layer
+    2. framework layer
+    3. C/C++ native-libraries and Runtime-->dalvik
+    4. HAL- hardware abstraction layer
+    5. Linux kernal
+    6. Power Management
+
+
+
+activity fragment life cycle
+
+interface data passing
+
+service/intent service
+
+create application every 30sec location fetching
+location permission
+normal permission/ danger permission
+
+content provider make an app
